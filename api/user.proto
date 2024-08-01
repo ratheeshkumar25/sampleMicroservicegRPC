@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package pbU;
+
+option go_package = "./";
+
+service UserService {
+    // Unary RPC 
+    rpc UserSignup(UserCreate) returns (Response);
+
+    // Server Streaming RPC
+    rpc ListUsers(FetchAll) returns (stream UserDetails);
+
+    // Client Streaming RPC
+    rpc UploadUsers(stream UserCreate) returns (Response);
+
+    // Bidirectional RPC
+    rpc Chat(stream Message) returns (stream MessageResponse);
+}
+
+message FetchAll {}
+
+message UserCreate {
+    string username = 1;
+    string email = 2;
+    string password = 3;
+    string role = 4;
+}
+
+message UserDetails {
+    uint32 id = 1;
+    string username = 2;
+    string email = 3;
+    string password = 4;
+    string role = 5;
+}
+
+message Response {
+    string status = 1;
+    string error = 2;
+    string message = 3;
+}
+
+message Message {
+    string content = 1;
+}
+
+message MessageResponse {
+    string reply = 1;
+}
